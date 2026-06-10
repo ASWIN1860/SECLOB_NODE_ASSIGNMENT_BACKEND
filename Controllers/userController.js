@@ -30,7 +30,8 @@ exports.signup=async(req,res)=>{
 }
 
 exports.signin=async(req,res)=>{
-    const {password,email}=req.body
+   try{
+     const {password,email}=req.body
     if(!email || !password){
         res.status(400).json("Invalid Data")
     }
@@ -43,7 +44,10 @@ exports.signin=async(req,res)=>{
         else{
             res.status(400).json("Invalid Email/Password")
         }
-        
-        
     }
+   }
+   catch(err){
+    console.log(err)
+    res.status(500).json(err)
+   }
 }
