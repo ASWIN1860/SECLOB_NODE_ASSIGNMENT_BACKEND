@@ -65,6 +65,9 @@ exports.getAllProducts = async (req, res) => {
     const searchKey = req.query.search || "";
     const subCategoryId = req.query.subcategory || "";
 
+    const page = Number(req.query.page) || 1;
+    const limit = 6;
+
     let query = {
       productName: {
         $regex: searchKey,
@@ -79,9 +82,18 @@ exports.getAllProducts = async (req, res) => {
     const products = await productModel
       .find(query)
       .populate("categoryId")
-      .populate("subCategoryId");
+      .populate("subCategoryId")
+      .skip((page - 1) * limit)
+      .limit(limit);
 
-    res.status(200).json(products);
+    const totalProducts = await productModel.countDocuments(query);
+
+    res.status(200).json({
+      products,
+      currentPage: page,
+      totalPages: Math.ceil(totalProducts / limit),
+      totalProducts,
+    });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -97,6 +109,29 @@ exports.updateProduct = async (req, res) => {
     });
 
     res.status(200).json(updatedProduct);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+//add varient
+exports.addVariant = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const { ram, price, qty } = req.body;
+
+    const product = await productModel.findById(id);
+
+    product.variants.push({
+      ram,
+      price,
+      qty,
+    });
+
+    await product.save();
+
+    res.status(200).json(product);
   } catch (err) {
     res.status(500).json(err);
   }

@@ -17,11 +17,11 @@ router.post("/add-subcategory", subCategoryController.addSubCategory);
 router.get("/all-subcategory", subCategoryController.getAllSubCategories);
 
 router.post("/add-products", productController.addProduct);
-router.get("/all-products", productController.getProducts);
-router.get("/product/:id", productController.getSingleProduct);
+router.get("/single-product/:id", productController.getSingleProduct);
 router.get("/all-products", productController.getAllProducts);
 router.put("/product/:id", productController.updateProduct);
 router.delete("/product/:id", productController.deleteProduct);
+router.put('/add-varient/:id',productController.addVariant)
 
 router.post("/add-wishlist", wishlistController.addWishlist);
 router.get("/wishlist/:userId", wishlistController.getWishlist);
