@@ -39,12 +39,12 @@ exports.signin=async(req,res)=>{
         const user=await userModel.findOne({email,password})
         if(user){
             const token=jwt.sign({email:user?.email,role:user?.role},process.env.SECRET_KEY)
-            res.status(200).json({token,username:user?.username,profile:user?.profile,role:user?.role,bio:user?.bio})
+            res.status(200).json({token,userId:user?._id,username:user?.username,profile:user?.profile,role:user?.role,bio:user?.bio})
         }
         else{
             res.status(400).json("Invalid Email/Password")
         }
-    }
+    }   
    }
    catch(err){
     console.log(err)
