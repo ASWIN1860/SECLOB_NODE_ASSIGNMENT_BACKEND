@@ -66,7 +66,7 @@ exports.getAllProducts = async (req, res) => {
     const subCategoryId = req.query.subcategory || "";
 
     const page = Number(req.query.page) || 1;
-    const limit = 3;
+    const limit = 4;
 
     let query = {};
 
